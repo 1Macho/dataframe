@@ -4,7 +4,7 @@ import com.jpossaz.dataframe.datavalues.DataValue;
 
 import java.util.*;
 
-public class DataSignature implements List {
+public class DataSignature implements List<DataValue> {
     private List<DataValue> signature = new ArrayList<DataValue>();
 
 
@@ -34,8 +34,8 @@ public class DataSignature implements List {
     }
 
     @Override
-    public boolean add(Object o) {
-        return signature.add((DataValue)o);
+    public boolean add(DataValue dataValue) {
+        return signature.add(dataValue);
     }
 
     @Override
@@ -59,22 +59,22 @@ public class DataSignature implements List {
     }
 
     @Override
-    public Object get(int i) {
+    public DataValue get(int i) {
         return signature.get(i);
     }
 
     @Override
-    public Object set(int i, Object o) {
-        return signature.set(i, (DataValue)o);
+    public DataValue set(int i, DataValue dataValue) {
+        return signature.set(i, dataValue);
     }
 
     @Override
-    public void add(int i, Object o) {
-        signature.add(i, (DataValue)o);
+    public void add(int i, DataValue dataValue) {
+        signature.add(i, dataValue);
     }
 
     @Override
-    public Object remove(int i) {
+    public DataValue remove(int i) {
         return signature.remove(i);
     }
 

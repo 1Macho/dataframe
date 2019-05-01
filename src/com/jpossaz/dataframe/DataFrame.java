@@ -12,8 +12,9 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
-public class DataFrame implements Collection<Registry>, Cloneable {
+public class DataFrame implements List<Registry>, Cloneable {
     private String dataFrameName;
     private List<Registry> registryList;
     private String watchedValue;
@@ -52,7 +53,7 @@ public class DataFrame implements Collection<Registry>, Cloneable {
             {
                 newRegistry.setValue(((DataValue)signature.get(j)).getName(), lineBits[j]);
             }
-
+            add(newRegistry);
         }
     }
 
@@ -99,7 +100,7 @@ public class DataFrame implements Collection<Registry>, Cloneable {
 
     @Override
     public boolean add(Registry registry) {
-        return false;
+        return registryList.add(registry);
     }
 
     @Override
@@ -118,6 +119,11 @@ public class DataFrame implements Collection<Registry>, Cloneable {
     }
 
     @Override
+    public boolean addAll(int i, Collection<? extends Registry> collection) {
+        return registryList.addAll(i, collection);
+    }
+
+    @Override
     public boolean removeAll(Collection<?> collection) {
         return registryList.removeAll(collection);
     }
@@ -130,5 +136,50 @@ public class DataFrame implements Collection<Registry>, Cloneable {
     @Override
     public void clear() {
         registryList.clear();
+    }
+
+    @Override
+    public Registry get(int i) {
+        return registryList.get(i);
+    }
+
+    @Override
+    public Registry set(int i, Registry registry) {
+        return registryList.set(i, registry);
+    }
+
+    @Override
+    public void add(int i, Registry registry) {
+        registryList.add(i, registry);
+    }
+
+    @Override
+    public Registry remove(int i) {
+        return registryList.remove(i);
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return registryList.indexOf(o);
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return registryList.lastIndexOf(o);
+    }
+
+    @Override
+    public ListIterator<Registry> listIterator() {
+        return registryList.listIterator();
+    }
+
+    @Override
+    public ListIterator<Registry> listIterator(int i) {
+        return registryList.listIterator(i);
+    }
+
+    @Override
+    public List<Registry> subList(int i, int i1) {
+        return registryList.subList(i, i1);
     }
 }
