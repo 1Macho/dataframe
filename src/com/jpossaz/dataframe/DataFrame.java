@@ -4,8 +4,6 @@ import com.jpossaz.dataframe.datavalues.DataValue;
 import com.jpossaz.dataframe.datavalues.NumericDataValue;
 import com.jpossaz.dataframe.datavalues.TextDataValue;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,7 +13,7 @@ public class DataFrame implements List<Registry>, Cloneable {
     private String dataFrameName;
     private List<Registry> registryList = new ArrayList<>();
     private String watchedValue;
-    private DataSignature signature = new DataSignature();
+    private DataSignature signature;
 
     public DataFrame (String filepath) throws IOException, IndexOutOfBoundsException, CloneNotSupportedException {
         String[] filepathSplitBySlash = filepath.split("/");
