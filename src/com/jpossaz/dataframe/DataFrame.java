@@ -9,25 +9,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class DataFrame implements List<Registry>, Cloneable {
     private String dataFrameName;
-    private List<Registry> registryList;
+    private List<Registry> registryList = new ArrayList<>();
     private String watchedValue;
     private DataSignature signature = new DataSignature();
 
     public DataFrame (String filepath) throws IOException, IndexOutOfBoundsException, CloneNotSupportedException {
         String[] filepathSplitBySlash = filepath.split("/");
         String lastBit = filepathSplitBySlash[filepathSplitBySlash.length - 1];
-        String[] nameSplitByDots = lastBit.split(".");
-        dataFrameName = nameSplitByDots[nameSplitByDots.length - 1];
+        int pos = lastBit.lastIndexOf('.');
+        if (pos == -1) dataFrameName = lastBit;
+        else this.dataFrameName = lastBit.substring(0, pos);
         List<String> fileLines = Files.readAllLines(Paths.get(filepath));
-        String[] firstLine = fileLines.get(0).split(",");
-        String[] secondLine = fileLines.get(1).split(",");
+        String[] firstLine = Utils.parseDataFrameLine(fileLines.get(0));
+        String[] secondLine = Utils.parseDataFrameLine(fileLines.get(1));
         if (firstLine.length != secondLine.length)
             throw new IndexOutOfBoundsException("File signature does not match the data.");
         signature = new DataSignature();
@@ -44,11 +42,11 @@ public class DataFrame implements List<Registry>, Cloneable {
                 continue;
             }
         }
-        Registry baseRegistry = new Registry(signature);
+        Registry baseRegistry = new Registry(signature, this);
         for (int i = 1; i < fileLines.size(); i++)
         {
             Registry newRegistry = baseRegistry.clone();
-            String[] lineBits = fileLines.get(i).split(",");
+            String[] lineBits = Utils.parseDataFrameLine(fileLines.get(i));
             for (int j = 0; j < lineBits.length; j++)
             {
                 newRegistry.setValue(((DataValue)signature.get(j)).getName(), lineBits[j]);

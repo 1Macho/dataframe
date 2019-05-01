@@ -3,19 +3,19 @@ package com.jpossaz.dataframe;
 import com.jpossaz.dataframe.datavalues.DataValue;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Registry implements Comparable, Cloneable {
     private DataFrame parent;
-    private HashMap<String, DataValue> values;
+    private HashMap<String, DataValue> values = new HashMap<>();
     private DataSignature signature;
 
-    public Registry (DataSignature signature) throws CloneNotSupportedException {
+    public Registry (DataSignature signature, DataFrame parent) throws CloneNotSupportedException {
         this.signature = signature;
+        this.parent = parent;
         for (int i = 0; i < signature.size(); i++)
         {
 
-            DataValue newDataValue = ((DataValue)signature.get(i)).clone();
+            DataValue newDataValue = (this.signature.get(i)).clone();
             values.put(newDataValue.getName(), newDataValue);
         }
     }

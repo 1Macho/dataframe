@@ -27,6 +27,11 @@ public class NumericDataValue extends DataValue {
 
     @Override
     public void setValue(Object value) throws ClassCastException {
+        if (value.equals(""))
+        {
+            this.value = Double.NaN;
+            return;
+        }
         try {
             this.value = (double) value;
         }
@@ -62,6 +67,7 @@ public class NumericDataValue extends DataValue {
 
     public static boolean wouldFit (Object o)
     {
+        if (o.equals("")) return true;
         try {
             Double test = (Double)o;
         }
