@@ -32,6 +32,10 @@ public class DataFrame implements List<Registry>, Cloneable {
             if(NumericDataValue.wouldFit(secondLine[i]))
             {
                 signature.add(new NumericDataValue(firstLine[i]));
+                if (watchedValue == null)
+                {
+                    watchedValue = firstLine[i];
+                }
                 continue;
             }
             if(TextDataValue.wouldFit(secondLine[i]))
