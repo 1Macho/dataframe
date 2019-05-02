@@ -10,4 +10,5 @@ public abstract class DataValue implements Comparable, Cloneable {
         DataValue clone = (DataValue)super.clone();
         return clone;
     }
+    public abstract boolean getIsSet();
 }

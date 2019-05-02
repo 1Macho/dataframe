@@ -68,6 +68,24 @@ public class DataFrame implements List<Registry>, Cloneable {
         return watchedValue;
     }
 
+    public boolean watchingNumericValue (){
+        for (DataValue value: signature)
+        {
+            if (value.getName().equals(getWatchedValue()))
+            {
+                try {
+                    NumericDataValue test = (NumericDataValue)value;
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public int size() {
         return registryList.size();

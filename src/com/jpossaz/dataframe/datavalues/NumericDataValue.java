@@ -4,21 +4,38 @@ public class NumericDataValue extends DataValue {
 
     private Double value = Double.NaN;
     private String name;
+    private boolean isSet = false;
 
     public NumericDataValue (String name)
     {
         this.name = name;
     }
+
+    private void verifyValue ()
+    {
+        isSet = (value == Double.NaN);
+    }
+
     public NumericDataValue (String name, double value)
     {
         this.name = name;
         this.value = value;
+        verifyValue();
     }
     public NumericDataValue (String name, String value)
     {
         this.name = name;
+        if (value.equals(""))
+        {
+            this.value = Double.NaN;
+            return;
+        }
         this.value = Double.parseDouble(value);
+        verifyValue();
     }
+
+    @Override
+    public boolean getIsSet () { return isSet; }
 
     @Override
     public Object getValue() {
@@ -30,15 +47,18 @@ public class NumericDataValue extends DataValue {
         if (value.equals(""))
         {
             this.value = Double.NaN;
+            verifyValue();
             return;
         }
         try {
             this.value = (double) value;
+            verifyValue();
         }
         catch (ClassCastException c)
         {
             try {
                 this.value = Double.parseDouble((String) value);
+                verifyValue();
             }
             catch (Exception e)
             {

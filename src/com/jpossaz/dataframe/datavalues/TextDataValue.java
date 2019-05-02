@@ -4,6 +4,7 @@ public class TextDataValue extends DataValue {
 
     private String value = "";
     private String name;
+    private boolean isSet = false;
 
     public TextDataValue (String name)
     {
@@ -13,6 +14,18 @@ public class TextDataValue extends DataValue {
     {
         this.name = name;
         this.value = value;
+        verifyValue();
+    }
+
+    @Override
+    public boolean getIsSet ()
+    {
+        return isSet;
+    }
+
+    private void verifyValue ()
+    {
+        isSet = (value.equals(""));
     }
 
     @Override
@@ -23,6 +36,7 @@ public class TextDataValue extends DataValue {
     @Override
     public void setValue(Object value) throws ClassCastException {
         this.value = (String)value;
+        verifyValue();
     }
 
     @Override

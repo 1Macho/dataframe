@@ -31,7 +31,7 @@ public class Registry implements Comparable, Cloneable {
         DataValue watchedValueOther = ((Registry)o).obtainWatchedValue();
         return watchedValueSelf.compareTo(watchedValueOther);
     }
-    private DataValue obtainWatchedValue ()
+    public DataValue obtainWatchedValue ()
     {
         String watchedValueName = parent.getWatchedValue();
         return values.get(watchedValueName);
