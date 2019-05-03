@@ -86,6 +86,12 @@ public class DataFrame implements List<Registry>, Cloneable {
         return false;
     }
 
+    public DataFrame clone () throws CloneNotSupportedException
+    {
+        DataFrame clone = (DataFrame) super.clone();
+        return clone;
+    }
+
     @Override
     public int size() {
         return registryList.size();
