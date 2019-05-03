@@ -57,6 +57,11 @@ public class DataFrame implements List<Registry>, Cloneable {
         }
     }
 
+    public String getDataFrameName ()
+    {
+        return dataFrameName;
+    }
+
     public DataFrame (String dataFrameName, DataSignature signature)
     {
         this.dataFrameName = dataFrameName;
