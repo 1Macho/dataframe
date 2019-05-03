@@ -30,7 +30,7 @@ public class DataFilter {
         for (Registry r : input)
         {
             Comparable thisValue = (Comparable)r.obtainWatchedValue().getValue();
-            if (thisValue.compareTo(filterValue) > 1)
+            if (thisValue.compareTo(filterValue) >= 0)
             {
                 result.remove(r);
             }
@@ -42,7 +42,7 @@ public class DataFilter {
         for (Registry r : input)
         {
             Comparable thisValue = (Comparable)r.obtainWatchedValue().getValue();
-            if (thisValue.compareTo(filterValue) < 1)
+            if (thisValue.compareTo(filterValue) <= 0)
             {
                 result.remove(r);
             }
