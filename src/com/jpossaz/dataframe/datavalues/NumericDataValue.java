@@ -1,8 +1,8 @@
 package com.jpossaz.dataframe.datavalues;
 
-public class NumericDataValue extends DataValue {
+public final class NumericDataValue extends DataValue {
 
-    private Double value = Double.NaN;
+    private double value = Double.NaN;
     private String name;
     private boolean isSet = false;
 
@@ -13,7 +13,7 @@ public class NumericDataValue extends DataValue {
 
     private void verifyValue ()
     {
-        isSet = (value == Double.NaN);
+        isSet = !Double.isNaN(value);
     }
 
     public NumericDataValue (String name, double value)
@@ -36,6 +36,11 @@ public class NumericDataValue extends DataValue {
 
     @Override
     public boolean getIsSet () { return isSet; }
+
+    @Override
+    public DataValue clone() {
+        return new NumericDataValue(name, value);
+    }
 
     @Override
     public Object getValue() {

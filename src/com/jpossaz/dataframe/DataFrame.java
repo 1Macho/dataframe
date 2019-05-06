@@ -9,11 +9,20 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class DataFrame implements List<Registry>, Cloneable {
+public class DataFrame implements List<Registry> {
     private String dataFrameName;
     private List<Registry> registryList = new ArrayList<>();
     private String watchedValue;
     private DataSignature signature;
+
+    public DataFrame(DataFrame cloneBase) {
+        this.dataFrameName = cloneBase.dataFrameName;
+        for (Registry reg : cloneBase.registryList) {
+            this.registryList.add(new Registry(reg));
+        }
+        this.watchedValue = cloneBase.watchedValue;
+        this.signature = cloneBase.signature;
+    }
 
     public DataFrame (String filepath) throws IOException, IndexOutOfBoundsException, CloneNotSupportedException {
         String[] filepathSplitBySlash = filepath.split("/");
@@ -47,11 +56,11 @@ public class DataFrame implements List<Registry>, Cloneable {
         Registry baseRegistry = new Registry(signature, this);
         for (int i = 1; i < fileLines.size(); i++)
         {
-            Registry newRegistry = baseRegistry.clone();
+            Registry newRegistry = new Registry(baseRegistry);
             String[] lineBits = Utils.parseDataFrameLine(fileLines.get(i));
             for (int j = 0; j < lineBits.length; j++)
             {
-                newRegistry.setValue(((DataValue)signature.get(j)).getName(), lineBits[j]);
+                newRegistry.setValue(signature.get(j).getName(), lineBits[j]);
             }
             add(newRegistry);
         }
@@ -67,6 +76,8 @@ public class DataFrame implements List<Registry>, Cloneable {
         this.dataFrameName = dataFrameName;
         this.signature = signature;
     }
+
+    public int getColumnCount () { return signature.size(); }
 
     public String getWatchedValue ()
     {
@@ -89,12 +100,6 @@ public class DataFrame implements List<Registry>, Cloneable {
             }
         }
         return false;
-    }
-
-    public DataFrame clone () throws CloneNotSupportedException
-    {
-        DataFrame clone = (DataFrame) super.clone();
-        return clone;
     }
 
     @Override

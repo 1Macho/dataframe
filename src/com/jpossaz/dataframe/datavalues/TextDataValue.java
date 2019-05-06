@@ -1,6 +1,6 @@
 package com.jpossaz.dataframe.datavalues;
 
-public class TextDataValue extends DataValue {
+public final class TextDataValue extends DataValue {
 
     private String value = "";
     private String name;
@@ -26,6 +26,11 @@ public class TextDataValue extends DataValue {
     private void verifyValue ()
     {
         isSet = (value.equals(""));
+    }
+
+    @Override
+    public DataValue clone() throws ClassCastException {
+        return new TextDataValue(this.name, this.value);
     }
 
     @Override

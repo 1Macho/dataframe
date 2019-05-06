@@ -4,10 +4,18 @@ import com.jpossaz.dataframe.datavalues.DataValue;
 
 import java.util.HashMap;
 
-public class Registry implements Comparable, Cloneable {
+public class Registry implements Comparable {
     private DataFrame parent;
     private HashMap<String, DataValue> values = new HashMap<>();
     private DataSignature signature;
+
+    public Registry(Registry cloneBase) {
+        this.parent = cloneBase.parent;
+        for (String key : cloneBase.values.keySet()) {
+            this.values.put(key, cloneBase.values.get(key).clone());
+        }
+        this.signature = cloneBase.signature;
+    }
 
     public Registry (DataSignature signature, DataFrame parent) throws CloneNotSupportedException {
         this.signature = signature;
@@ -35,10 +43,5 @@ public class Registry implements Comparable, Cloneable {
     {
         String watchedValueName = parent.getWatchedValue();
         return values.get(watchedValueName);
-    }
-    public Registry clone () throws CloneNotSupportedException
-    {
-        Registry clone = (Registry) super.clone();
-        return clone;
     }
 }

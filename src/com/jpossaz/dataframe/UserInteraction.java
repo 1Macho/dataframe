@@ -1,5 +1,6 @@
 package com.jpossaz.dataframe;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -26,6 +27,14 @@ public class UserInteraction {
             repl();
         }
     }
+
+    private static boolean verifyFrameName(String name) {
+        for (DataFrame currentFrame : loadedDataFrames) {
+            if (name.equals(currentFrame.getDataFrameName())) return false;
+        }
+        return true;
+    }
+
     private static void repl () {
         String dataFrameName;
         if (selectedDataFrame == null) {
@@ -37,5 +46,96 @@ public class UserInteraction {
         }
         System.out.print("[ " + dataFrameName + "," + watchedValue + " ]> ");
         String command = scanner.nextLine();
+        String[] commandBits = Utils.splitCommandLine(command);
+        if (commandBits.length > 0)
+        {
+            if (commandBits[0].equals("list"))
+            {
+                System.out.println("Listing all loaded dataframes...");
+                //System.out.println("NAME\tCOLUMNS\tSIZE");
+                System.out.format("%14s%14s%14s\n", "NAME", "COLUMNS", "SIZE");
+                for (int i = 0; i < loadedDataFrames.size(); i++)
+                {
+                    DataFrame thisFrame = loadedDataFrames.get(i);
+                    //System.out.println(thisFrame.getDataFrameName() + "\t" + thisFrame.getColumnCount() + "\t" +
+                            //thisFrame.size());
+                    System.out.format("%14s%14d%14d\n", thisFrame.getDataFrameName(), thisFrame.getColumnCount(), thisFrame.size());
+                }
+                return;
+            }
+            if (commandBits.length > 1)
+            {
+                if (commandBits[0].equals("load"))
+                {
+                    String filename = commandBits[1];
+                    try {
+                        System.out.println("Loading the file " + filename + "...");
+                        DataFrame loadedFrame = new DataFrame(filename);
+                        if (verifyFrameName(loadedFrame.getDataFrameName())) {
+                            loadedDataFrames.add(loadedFrame);
+                            selectedDataFrame = loadedFrame;
+                            System.out.println("Dataframe successfully loaded");
+                        } else {
+                            System.out.println("Another loaded dataframe already exists with the same name");
+                        }
+                    } catch (CloneNotSupportedException e) {
+                        System.out.println("Internal java exception.");
+                    } catch (IOException e) {
+                        System.out.println("Unable to open " + filename);
+                    }
+                    return;
+                }
+                if (commandBits[0].equals("unload"))
+                {
+                    String frameName = commandBits[1];
+                    boolean unloaded = false;
+                    for (DataFrame thisFrame : loadedDataFrames)
+                    {
+                        if (thisFrame.getDataFrameName().equals(frameName))
+                        {
+                            unloaded = true;
+                            if (thisFrame.equals(selectedDataFrame))
+                            {
+                                if (loadedDataFrames.size() == 1)
+                                {
+                                    selectedDataFrame = null;
+                                }
+                                else
+                                {
+                                    selectedDataFrame = loadedDataFrames.get(0);
+                                }
+                            }
+                            loadedDataFrames.remove(thisFrame);
+                            System.out.println("Successfully unloaded the dataframe " + frameName);
+                        }
+                    }
+                    if (!unloaded)
+                    {
+                        System.out.println("Unable to unload " + frameName);
+                    }
+                }
+                if (commandBits[0].equals("calculate")) {
+                    System.out.println("Attemping to run " + commandBits[1] + " on the dataframe");
+                    if (commandBits[1].equals("trend")) {
+                        System.out.println("Trend: " + DataOperation.obtainTrend(selectedDataFrame));
+                    }
+                    if (commandBits[1].equals("deviation")) {
+                        System.out.println("Deviation: " + DataOperation.obtainStandardDeviation(selectedDataFrame));
+                    }
+                    if (commandBits[1].equals("mean")) {
+                        System.out.println("Mean: " + DataOperation.obtainMean(selectedDataFrame));
+                    }
+                    if (commandBits[1].equals("count")) {
+                        System.out.println("Count: " + DataOperation.obtainCount(selectedDataFrame));
+                    }
+                    if (commandBits[1].equals("max")) {
+                        System.out.println("Maximum: " + DataOperation.obtainMaximum(selectedDataFrame));
+                    }
+                    if (commandBits[1].equals("min")) {
+                        System.out.println("Minimum: " + DataOperation.obtainMinimum(selectedDataFrame));
+                    }
+                }
+            }
+        }
     }
 }

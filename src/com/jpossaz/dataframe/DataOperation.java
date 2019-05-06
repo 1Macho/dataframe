@@ -3,7 +3,6 @@ package com.jpossaz.dataframe;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class DataOperation {
@@ -33,7 +32,9 @@ public class DataOperation {
                 verifiedObjects.add(a);
             }
         }
-        return currentTrend;
+        if (currentTrend != null) {
+            return ((Registry) currentTrend).obtainWatchedValue().getValue();
+        } else return null;
     }
 
     public static Double obtainStandardDeviation (DataFrame input)
@@ -74,7 +75,7 @@ public class DataOperation {
         return accumulation / count;
     }
 
-    public static Double obtainMinimum (DataFrame input) throws ClassCastException
+    public static Double obtainMaximum(DataFrame input) throws ClassCastException
     {
         if(!input.watchingNumericValue())
             throw new ClassCastException("The watched value is non-numeric.");
@@ -90,7 +91,7 @@ public class DataOperation {
         return maximumValue;
     }
 
-    public static Double obtainMaximum (DataFrame input) throws ClassCastException
+    public static Double obtainMinimum(DataFrame input) throws ClassCastException
     {
         if(!input.watchingNumericValue())
             throw new ClassCastException("The watched value is non-numeric.");
