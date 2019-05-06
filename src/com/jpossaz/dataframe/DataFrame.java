@@ -68,6 +68,8 @@ public class DataFrame implements List<Registry>, Cloneable {
         this.signature = signature;
     }
 
+    public int getColumnCount () { return signature.size(); }
+
     public String getWatchedValue ()
     {
         return watchedValue;
