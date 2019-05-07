@@ -15,6 +15,10 @@ public class DataFrame implements List<Registry> {
     private String watchedValue;
     private DataSignature signature;
 
+    public void setWatchedValue(String watchedValue) {
+        this.watchedValue = watchedValue;
+    }
+
     public DataFrame(DataFrame cloneBase) {
         this.dataFrameName = cloneBase.dataFrameName;
         for (Registry reg : cloneBase.registryList) {
@@ -82,6 +86,14 @@ public class DataFrame implements List<Registry> {
     public String getWatchedValue ()
     {
         return watchedValue;
+    }
+
+    public String[] getColumnNames() {
+        ArrayList<String> columns = new ArrayList<>();
+        for (DataValue value : signature) {
+            columns.add(value.getName());
+        }
+        return columns.toArray(String[]::new);
     }
 
     public boolean watchingNumericValue (){

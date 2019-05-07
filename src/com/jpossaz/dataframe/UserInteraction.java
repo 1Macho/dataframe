@@ -49,6 +49,16 @@ public class UserInteraction {
         String[] commandBits = Utils.splitCommandLine(command);
         if (commandBits.length > 0)
         {
+            if (commandBits[0].equals("columns")) {
+                if (selectedDataFrame == null) {
+                    System.out.println("No dataframe is currently selected");
+                } else {
+                    System.out.println("Columns on the current dataframe:");
+                    for (String s : selectedDataFrame.getColumnNames()) {
+                        System.out.println(s);
+                    }
+                }
+            }
             if (commandBits[0].equals("list"))
             {
                 System.out.println("Listing all loaded dataframes...");
@@ -65,6 +75,9 @@ public class UserInteraction {
             }
             if (commandBits.length > 1)
             {
+                if (commandBits[0].equals("columns")) {
+
+                }
                 if (commandBits[0].equals("load"))
                 {
                     String filename = commandBits[1];
@@ -114,26 +127,43 @@ public class UserInteraction {
                         System.out.println("Unable to unload " + frameName);
                     }
                 }
+                if (commandBits[0].equals("watch")) {
+                    String columnToWatch = commandBits[1];
+                    for (String s : selectedDataFrame.getColumnNames()) {
+                        if (s.equals(columnToWatch)) {
+                            selectedDataFrame.setWatchedValue(columnToWatch);
+                            return;
+                        }
+                    }
+                    System.out.println("Unable to watch the value " + columnToWatch);
+                }
                 if (commandBits[0].equals("calculate")) {
                     System.out.println("Attemping to run " + commandBits[1] + " on the dataframe");
                     if (commandBits[1].equals("trend")) {
                         System.out.println("Trend: " + DataOperation.obtainTrend(selectedDataFrame));
+                        return;
                     }
                     if (commandBits[1].equals("deviation")) {
                         System.out.println("Deviation: " + DataOperation.obtainStandardDeviation(selectedDataFrame));
+                        return;
                     }
                     if (commandBits[1].equals("mean")) {
                         System.out.println("Mean: " + DataOperation.obtainMean(selectedDataFrame));
+                        return;
                     }
                     if (commandBits[1].equals("count")) {
                         System.out.println("Count: " + DataOperation.obtainCount(selectedDataFrame));
+                        return;
                     }
                     if (commandBits[1].equals("max")) {
                         System.out.println("Maximum: " + DataOperation.obtainMaximum(selectedDataFrame));
+                        return;
                     }
                     if (commandBits[1].equals("min")) {
                         System.out.println("Minimum: " + DataOperation.obtainMinimum(selectedDataFrame));
+                        return;
                     }
+                    System.out.println("Unable to run the specified operation.");
                 }
             }
         }
