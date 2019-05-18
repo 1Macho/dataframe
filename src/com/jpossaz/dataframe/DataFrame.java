@@ -4,6 +4,7 @@ import com.jpossaz.dataframe.datavalues.DataValue;
 import com.jpossaz.dataframe.datavalues.NumericDataValue;
 import com.jpossaz.dataframe.datavalues.TextDataValue;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -70,6 +71,33 @@ public class DataFrame implements List<Registry> {
         }
     }
 
+    public void saveDataFrame (String filename) throws IOException {
+        filename = filename + ".csv";
+        String fileContents = "";
+        for (int line = -1; line < size(); line++) {
+            for (int i = 0; i < signature.size(); i++) {
+                if (line == -1) {
+                    fileContents += "\"" + signature.get(i).getName() + "\"";
+                }
+                else
+                {
+                    fileContents += "\"" + get(line).values.get(signature.get(i).getName()).toString() + "\"";
+
+                }
+                if (i != signature.size() - 1) {
+                    fileContents += ",";
+                }
+                else
+                {
+                    fileContents += "\n";
+                }
+            }
+        }
+        FileWriter writer = new FileWriter(filename);
+        writer.write(fileContents);
+        writer.close();
+    }
+
     public String getDataFrameName ()
     {
         return dataFrameName;
@@ -93,7 +121,7 @@ public class DataFrame implements List<Registry> {
         for (DataValue value : signature) {
             columns.add(value.getName());
         }
-        return columns.toArray(String[]::new);
+        return (String[])columns.toArray();
     }
 
     public boolean watchingNumericValue (){

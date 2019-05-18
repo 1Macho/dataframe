@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Registry implements Comparable {
     private DataFrame parent;
-    private HashMap<String, DataValue> values = new HashMap<>();
+    public HashMap<String, DataValue> values = new HashMap<>();
     private DataSignature signature;
 
     public Registry(Registry cloneBase) {

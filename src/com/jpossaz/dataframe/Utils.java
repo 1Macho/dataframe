@@ -25,7 +25,7 @@ public class Utils {
             }
             result.add(splitByQuotes[i]);
         }
-        return result.toArray(String[]::new);
+        return (String[])result.toArray();
     }
     public static String[] splitCommandLine(String line)
     {
@@ -47,6 +47,6 @@ public class Utils {
             }
             currentBit = currentBit + line.charAt(i);
         }
-        return commandBits.toArray(String[]::new);
+        return (String[])commandBits.toArray();
     }
 }

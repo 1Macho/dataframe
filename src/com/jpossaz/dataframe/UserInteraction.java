@@ -75,9 +75,6 @@ public class UserInteraction {
             }
             if (commandBits.length > 1)
             {
-                if (commandBits[0].equals("columns")) {
-
-                }
                 if (commandBits[0].equals("load"))
                 {
                     String filename = commandBits[1];
@@ -125,6 +122,21 @@ public class UserInteraction {
                     if (!unloaded)
                     {
                         System.out.println("Unable to unload " + frameName);
+                    }
+                }
+                if (commandBits[0].equals("save"))
+                {
+                    if (selectedDataFrame != null)
+                    {
+                        System.out.println("Trying to save dataframe...");
+                        try {
+                            String filename = commandBits[1].replace(".csv", "");
+                            selectedDataFrame.saveDataFrame(filename);
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Unable to save dataframe as" + commandBits);
+                        }
                     }
                 }
                 if (commandBits[0].equals("watch")) {
