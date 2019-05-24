@@ -1,21 +1,46 @@
 package com.jpossaz.dataframe;
 
+import com.jpossaz.dataframe.datavalues.DataValue;
+import com.jpossaz.dataframe.datavalues.NumericDataValue;
+import com.jpossaz.dataframe.datavalues.TextDataValue;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The class that implements the static methods for user interaction.
+ */
 public class UserInteraction {
+    /**
+     * Whether or not the application is running.
+     */
     private static boolean running = false;
 
+    /**
+     * The DataFrame that is currently selected.
+     */
     private static DataFrame selectedDataFrame;
 
+    /**
+     * The value currently watched.
+     */
     private static String watchedValue = "";
 
+    /**
+     * The list of loaded DataFrames.
+     */
     private static List<DataFrame> loadedDataFrames = new ArrayList<>();
 
+    /**
+     * The scanner that reads from the command line.
+     */
     private static Scanner scanner;
 
+    /**
+     * Initialize the REPL (Read, eval, print, loop)
+     */
     public static void replInit ()
     {
         running = true;
@@ -28,6 +53,11 @@ public class UserInteraction {
         }
     }
 
+    /**
+     * Verify if a name is valid to be loaded into the list.
+     * @param name The name of the DataFrame to be verified.
+     * @return True if the name would not generate any conflict. False otherwise.
+     */
     private static boolean verifyFrameName(String name) {
         for (DataFrame currentFrame : loadedDataFrames) {
             if (name.equals(currentFrame.getDataFrameName())) return false;
@@ -35,6 +65,9 @@ public class UserInteraction {
         return true;
     }
 
+    /**
+     * The main read, eval, print, loop of the application.
+     */
     private static void repl () {
         String dataFrameName;
         if (selectedDataFrame == null) {
@@ -63,18 +96,80 @@ public class UserInteraction {
             {
                 System.out.println("Listing all loaded dataframes...");
                 //System.out.println("NAME\tCOLUMNS\tSIZE");
-                System.out.format("%14s%14s%14s\n", "NAME", "COLUMNS", "SIZE");
+                System.out.format("%25s%14s%14s\n", "NAME", "COLUMNS", "SIZE");
                 for (int i = 0; i < loadedDataFrames.size(); i++)
                 {
                     DataFrame thisFrame = loadedDataFrames.get(i);
                     //System.out.println(thisFrame.getDataFrameName() + "\t" + thisFrame.getColumnCount() + "\t" +
                             //thisFrame.size());
-                    System.out.format("%14s%14d%14d\n", thisFrame.getDataFrameName(), thisFrame.getColumnCount(), thisFrame.size());
+                    System.out.format("%25s%14d%14d\n", thisFrame.getDataFrameName(), thisFrame.getColumnCount(), thisFrame.size());
                 }
                 return;
             }
             if (commandBits.length > 1)
             {
+                if (commandBits.length > 2)
+                {
+                    if (commandBits[0].equals("filter")) {
+                        Comparable filterItem = null;
+                        if(NumericDataValue.wouldFit(commandBits[2]))
+                        {
+                            filterItem = Double.parseDouble(commandBits[2]);
+                        }
+                        if(filterItem == null && TextDataValue.wouldFit(commandBits[2]))
+                        {
+                            filterItem = commandBits[2];
+                        }
+                        if (filterItem == null)
+                        {
+                            System.out.println("Unable to build a comparable object out of the argument passed.");
+                        }
+                        DataFrame result = null;
+                        if (commandBits[1].equals("!=")) {
+                            result = DataFilter.filterNotEqualTo(selectedDataFrame, filterItem);
+                        }
+                        if (commandBits[1].equals("==")) {
+                            result = DataFilter.filterEqualTo(selectedDataFrame, filterItem);
+                        }
+                        if (commandBits[1].equals("<")) {
+                            result = DataFilter.filterLessThan(selectedDataFrame, filterItem);
+                        }
+                        if (commandBits[1].equals(">")) {
+                            result = DataFilter.filterGreaterThan(selectedDataFrame, filterItem);
+                        }
+                        if (commandBits[1].equals("<=")) {
+                            result = DataFilter.filterLessThanOrEqualTo(selectedDataFrame, filterItem);
+                        }
+                        if (commandBits[1].equals(">=")) {
+                            result = DataFilter.filterGreaterThanOrEqualTo(selectedDataFrame, filterItem);
+                        }
+                        if (result == null)
+                        {
+                            System.out.println("Unable to run the filter operation.");
+                            return;
+                        }
+                        String newName = result.getDataFrameName();
+                        if(newName.contains("-Filter"))
+                        {
+                            String[] nameBits = newName.split("-Filter");
+                            newName = "";
+                            for(int i = 0; i < nameBits.length - 1; i++)
+                            {
+                                newName += nameBits[i];
+                            }
+                            int number = Integer.parseInt(nameBits[nameBits.length -1]);
+                            number ++;
+                            newName += "-Filter" + number;
+                        }
+                        else
+                        {
+                            newName += "-Filter1";
+                        }
+                        result.setDataFrameName(newName);
+                        loadedDataFrames.add(result);
+                        selectedDataFrame = result;
+                    }
+                }
                 if (commandBits[0].equals("load"))
                 {
                     String filename = commandBits[1];

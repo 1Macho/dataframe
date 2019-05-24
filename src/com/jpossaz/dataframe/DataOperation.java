@@ -5,8 +5,16 @@ package com.jpossaz.dataframe;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that contains various statistical operations that can be carried out inside a DataFrame.
+ */
 public class DataOperation {
 
+    /**
+     * Obtain the trend of a DataFrame.
+     * @param input The DataFrame in which the calculation is carried out.
+     * @return The trend of the DataFrame.
+     */
     public static Object obtainTrend (DataFrame input)
     {
         List<Object> verifiedObjects = new ArrayList<>();
@@ -37,6 +45,11 @@ public class DataOperation {
         } else return null;
     }
 
+    /**
+     * Obtain the standard deviation of a DataFrame.
+     * @param input The DataFrame in which the calculation is carried out.
+     * @return The numerical standard deviation of the DataFrame.
+     */
     public static Double obtainStandardDeviation (DataFrame input)
     {
         if(!input.watchingNumericValue())
@@ -58,6 +71,11 @@ public class DataOperation {
         return Math.sqrt(variance);
     }
 
+    /**
+     * Obtain the trend mean of a DataFrame.
+     * @param input The DataFrame in which the calculation is carried out.
+     * @return The numerical mean of the DataFrame.
+     */
     public static Double obtainMean (DataFrame input)
     {
         if(!input.watchingNumericValue())
@@ -75,6 +93,11 @@ public class DataOperation {
         return accumulation / count;
     }
 
+    /**
+     * Obtain the maximum of a DataFrame.
+     * @param input The DataFrame in which the calculation is carried out.
+     * @return The numerical maximum of the DataFrame.
+     */
     public static Double obtainMaximum(DataFrame input) throws ClassCastException
     {
         if(!input.watchingNumericValue())
@@ -91,6 +114,11 @@ public class DataOperation {
         return maximumValue;
     }
 
+    /**
+     * Obtain the minimum of a DataFrame.
+     * @param input The DataFrame in which the calculation is carried out.
+     * @return The numerical minimum of the DataFrame.
+     */
     public static Double obtainMinimum(DataFrame input) throws ClassCastException
     {
         if(!input.watchingNumericValue())
@@ -107,6 +135,11 @@ public class DataOperation {
         return minimumValue;
     }
 
+    /**
+     * Obtain the count of a DataFrame.
+     * @param input The DataFrame in which the calculation is carried out.
+     * @return The numerical count of the DataFrame.
+     */
     public static Integer obtainCount (DataFrame input)
     {
         int count = 0;

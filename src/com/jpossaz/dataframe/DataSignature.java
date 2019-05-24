@@ -4,7 +4,15 @@ import com.jpossaz.dataframe.datavalues.DataValue;
 
 import java.util.*;
 
+/**
+ * A class that holds a signature. Essentially, A set of DataValues that describes the columns of a DataFrame.
+ */
+
 public class DataSignature implements List<DataValue> {
+
+    /**
+     * The internal list of DataValues itself.
+     */
     private List<DataValue> signature = new ArrayList<DataValue>();
 
 

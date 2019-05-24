@@ -8,7 +8,15 @@ package com.jpossaz.dataframe;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class containing various utilities used around the program.
+ */
 public class Utils {
+    /**
+     * Parse one line of the raw data frame text and turn it into useful data.
+     * @param line The line to be parsed.
+     * @return An array of the bits that were extracted from the line.
+     */
     public static String[] parseDataFrameLine(String line)
     {
         line = line + "\n";
@@ -25,8 +33,14 @@ public class Utils {
             }
             result.add(splitByQuotes[i]);
         }
-        return (String[])result.toArray();
+        return result.toArray(new String[result.size()]);
     }
+
+    /**
+     * Split a REPL command line into the segments that compose it.
+     * @param line The line to be considered.
+     * @return An array of the command segments.
+     */
     public static String[] splitCommandLine(String line)
     {
         ArrayList<String> commandBits = new ArrayList<>();
@@ -47,6 +61,6 @@ public class Utils {
             }
             currentBit = currentBit + line.charAt(i);
         }
-        return (String[])commandBits.toArray();
+        return commandBits.toArray(new String[commandBits.size()]);
     }
 }
