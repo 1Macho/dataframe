@@ -82,6 +82,17 @@ public class UserInteraction {
         String[] commandBits = Utils.splitCommandLine(command);
         if (commandBits.length > 0)
         {
+            if (commandBits[0].equals("help")) {
+                System.out.println("load [archivo]: Permite cargar un DataFrame desde un archivo .csv.\n" +
+                        "unload [nombre]: Permite eliminar un DataFrame de la lista de dataframes cargados.\n" +
+                        "save [nombre]: Permite guardar un DataFrame a un archivo .csv.\n" +
+                        "filter [operación]: Permite obtener un DataFrame que es la versión filtrada del dataframe seleccionado actualmente, agregándolo a la lista de dataframes cargados.\n" +
+                        "calculate [operación]: Permite obtener el resultado de la operación estadística especificada, ejecutada sobre el dataframe.\n" +
+                        "list: Imprime la lista de dataframes cargados a los que el usuario puede acceder.\n" +
+                        "columns: Imprime la lista de columnas que componen el dataframe seleccionado. \n" +
+                        "select [nombre]: Selecciona un DataFrame de la lista de dataframes a los que el usuario puede acceder. \n" +
+                        "watch [columna]: Selecciona la columna a observar dentro del dataframe seleccionado.\n");
+            }
             if (commandBits[0].equals("columns")) {
                 if (selectedDataFrame == null) {
                     System.out.println("No dataframe is currently selected");
